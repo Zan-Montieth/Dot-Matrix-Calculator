@@ -5,10 +5,13 @@ function createDotMatrix(){
     let dotDisplay = document.getElementById("dotDisplay")
     let dotElement = document.createElement("div");
     dotElement.classList.add("dot")
+    let rowElement = document.createElement("div");
+    rowElement.classList.add("row")
+    for(dot = 0; dot < displayXdimension; dot++){
+        rowElement.appendChild(dotElement.cloneNode(true));
+    }
     for(row = 0; row < displayYdimension; row++){
-        for(dot = 0; dot < displayXdimension; dot++){
-            dotDisplay.appendChild(dotElement.cloneNode(true))
-        }
+        dotDisplay.appendChild(rowElement.cloneNode(true));
     }
     sizeDotDisplay();
 }
