@@ -1,0 +1,30 @@
+:root {
+    --dotW: 5px;
+    --dotM: 1px;
+}
+
+body,
+html {
+    height: 100%;
+}
+
+#calculator{
+    display: flex;
+    justify-content: center;
+}
+
+#dotDisplay {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: darkslategray;
+    padding: calc(var(--dotW)*2);
+}
+
+.dot {
+    background-color: grey;
+    height: var(--dotW);
+    width: var(--dotW);
+    flex-basis: var(--dotW);
+    margin: var(--dotM);
+    border-radius: 50%;
+}
