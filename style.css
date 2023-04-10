@@ -15,7 +15,7 @@ html {
 
 #dotDisplay {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     background-color: darkslategray;
     padding: calc(var(--dotW)*2);
 }
@@ -27,4 +27,8 @@ html {
     flex-basis: var(--dotW);
     margin: var(--dotM);
     border-radius: 50%;
+}
+
+.row{
+    display: flex;
 }
