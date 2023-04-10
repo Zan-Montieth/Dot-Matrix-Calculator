@@ -29,6 +29,10 @@ html {
     border-radius: 50%;
 }
 
+.activated{
+    background-color: yellow;
+}
+
 .row{
     display: flex;
 }
