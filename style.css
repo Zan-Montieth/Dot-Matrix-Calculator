@@ -8,16 +8,18 @@ html {
     height: 100%;
 }
 
-#calculator{
+#calculator {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: stretch;
 }
 
 #dotDisplay {
     display: flex;
     flex-direction: column;
     background-color: darkslategray;
-    padding: calc(var(--dotW)*2);
+    padding: calc(var(--dotW) * 2);
 }
 
 .dot {
@@ -29,10 +31,24 @@ html {
     border-radius: 50%;
 }
 
-.activated{
+.activated {
     background-color: yellow;
 }
 
-.row{
+.row {
     display: flex;
+}
+
+.buttonRow {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 112px;
+}
+
+button {
+    flex-grow: 1;
+    flex-basis: 36px;
+    margin: 6px;
+    font-size: 36px;
 }

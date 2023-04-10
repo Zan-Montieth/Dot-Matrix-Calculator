@@ -146,38 +146,11 @@ function createDotMatrix() {
         dotDisplay.appendChild(rowElement.cloneNode(true));
     }
     sizeDotDisplay();
-    printChar("1", false);
-    addSpace();
-    printChar("2", false);
-    addSpace();
-    printChar("3", false);
-    addSpace();
-    printChar("4", false);
-    addSpace();
-    printChar("5", false);
-    addSpace();
-    printChar("6", false);
-    addSpace();
-    printChar("7", false);
-    addSpace();
-    printChar("8", false);
-    addSpace();
-    printChar("9", false);
-    addSpace();
-    printChar("0", false);
-    addSpace();
-    printChar("+", false);
-    addSpace();
-    printChar("-", false);
-    addSpace();
-    printChar("/", false);
-    addSpace();
-    printChar("*", false);
-    addSpace();
 }
 
 function sizeDotDisplay() {
     const dotDisplay = document.getElementById("dotDisplay");
+    const userInputs = document.getElementById("userInputs");
     const dotElement = document.getElementsByClassName("dot")[0];
     let dotWidth = getComputedStyle(dotElement).getPropertyValue("width");
     dotWidth = dotWidth.substring(0, dotWidth.length - 2);
@@ -189,6 +162,7 @@ function sizeDotDisplay() {
     newWidth = newWidth + "px";
     console.log(newWidth);
     dotDisplay.style.width = newWidth;
+    userInputs.style.width = newWidth;
 }
 
 function activateDot(xCoord, yCoord) {
