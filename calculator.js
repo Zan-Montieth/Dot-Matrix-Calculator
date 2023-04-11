@@ -221,9 +221,10 @@ function sizeDotDisplay() {
 function setButtonFunctions() {
     numbers = document.getElementsByClassName("number");
     operations = document.getElementsByClassName("operation");
-    clearButton = document.getElementById("clr");
-    equalButton = document.getElementById("equals");
     decimalButton = document.getElementById("decimal");
+    equalButton = document.getElementById("equals");
+    clearButton = document.getElementById("clr");
+    backButton = document.getElementById("back");
     Array.from(numbers).forEach((digit) => {
         digit.addEventListener("click", numberPress);
     });
@@ -233,6 +234,7 @@ function setButtonFunctions() {
     decimalButton.addEventListener("click", function () {
         activeHistory += ".";
         printChar(".", false);
+        this.disabled = true;
     });
     equalButton.addEventListener("click", function () {
         activeHistory += "=";
@@ -265,6 +267,27 @@ function setButtonFunctions() {
         Array.from(operations).forEach((operation) => {
             operation.disabled = false;
         });
+        document.getElementById("decimal").disabled = false;
+    });
+    back.addEventListener("click", function () {
+        
+        lastChar = activeHistory.split("")[activeHistory.length - 1];
+        console.log(lastChar)
+        for (
+            goBack = 0;
+            goBack < displayChar[lastChar][0].length + 2;
+            goBack++
+        ) {
+            for (row = 0; row < 7; row++) {
+                shiftRowRight(14 + row);
+            }
+        }
+        addSpace(false)
+        if(lastChar == "."){
+            addSpace(false)
+            document.getElementById("decimal").disabled = false;
+        }
+        activeHistory = activeHistory.substring(0, activeHistory.length - 1);
     });
 }
 
@@ -292,6 +315,7 @@ function operationPress() {
     Array.from(operations).forEach((operation) => {
         operation.disabled = true;
     });
+    document.getElementById("decimal").disabled = false;
 }
 
 function activateDot(xCoord, yCoord) {
@@ -318,17 +342,20 @@ function shiftRowLeft(rowNum) {
     dotDisplay.childNodes[rowNum].appendChild(dotElement);
 }
 
-// function shiftRowRight(rowNum) {
-//     let dotElement = document.createElement("div");
-//     dotElement.classList.add("dot");
-//     const dotDisplay = document.getElementById("dotDisplay");
-//     dotDisplay.childNodes[rowNum].removeChild(
-//         dotDisplay.childNodes[rowNum].lastChild
-//     );
-//     let newDotNum = +dotDisplay.childNodes[rowNum].firstChild.classList[1] - 1;
-//     dotElement.classList.add(newDotNum);
-//     dotDisplay.childNodes[rowNum].insertBefore(dotElement, dotDisplay.childNodes[rowNum].firstChild);
-// } Deprecated by updating print char function
+function shiftRowRight(rowNum) {
+    let dotElement = document.createElement("div");
+    dotElement.classList.add("dot");
+    const dotDisplay = document.getElementById("dotDisplay");
+    dotDisplay.childNodes[rowNum].removeChild(
+        dotDisplay.childNodes[rowNum].lastChild
+    );
+    let newDotNum = +dotDisplay.childNodes[rowNum].firstChild.classList[1] - 1;
+    dotElement.classList.add(newDotNum);
+    dotDisplay.childNodes[rowNum].insertBefore(
+        dotElement,
+        dotDisplay.childNodes[rowNum].firstChild
+    );
+}
 
 function printChar(charIn, isUpper) {
     charArray = displayChar[charIn];
@@ -383,7 +410,6 @@ function clearDisplay(isUpper) {
 }
 
 function updateHistory() {
-    console.log(buttonHistory);
     charHistory = buttonHistory.split("");
     clearDisplay(true);
     for (charIndex = 0; charIndex < charHistory.length; charIndex++) {
@@ -407,8 +433,6 @@ function computeSolution() {
             numberIndex++;
         }
     }
-    console.log(computeNumbers);
-    console.log(parseFloat(computeNumbers[0]));
     for (charIndex = 0; charIndex < buttonHistory.length; charIndex++) {
         if (computeArray[charIndex] == "+") {
             answer =
@@ -435,4 +459,5 @@ function computeSolution() {
     Array.from(operations).forEach((operation) => {
         operation.disabled = false;
     });
+    document.getElementById("decimal").disabled = false;
 }
