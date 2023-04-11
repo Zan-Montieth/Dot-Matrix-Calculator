@@ -222,17 +222,49 @@ function setButtonFunctions() {
     numbers = document.getElementsByClassName("number");
     operations = document.getElementsByClassName("operation");
     clearButton = document.getElementById("clr");
+    equalButton = document.getElementById("equals");
+    decimalButton = document.getElementById("decimal");
     Array.from(numbers).forEach((digit) => {
         digit.addEventListener("click", numberPress);
     });
     Array.from(operations).forEach((operation) => {
         operation.addEventListener("click", operationPress);
     });
+    decimalButton.addEventListener("click", function () {
+        activeHistory += ".";
+        printChar(".", false);
+    });
+    equalButton.addEventListener("click", function () {
+        activeHistory += "=";
+        buttonHistory += activeHistory;
+        activeHistory = "";
+        clearDisplay(false);
+        updateHistory();
+        try {
+            computeSolution();
+        } catch {
+            clearDisplay(true);
+            clearDisplay(false);
+            printChar("E", false);
+            addSpace(false);
+            printChar("R", false);
+            addSpace(false);
+            printChar("R", false);
+            addSpace(false);
+            printChar("O", false);
+            addSpace(false);
+            printChar("R", false);
+            addSpace(false);
+        }
+    });
     clearButton.addEventListener("click", function () {
         clearDisplay(true);
         clearDisplay(false);
         activeHistory = "";
         buttonHistory = "";
+        Array.from(operations).forEach((operation) => {
+            operation.disabled = false;
+        });
     });
 }
 
@@ -260,17 +292,6 @@ function operationPress() {
     Array.from(operations).forEach((operation) => {
         operation.disabled = true;
     });
-    // else if (this.id == "decimal") {
-    //     activeHistory += ".";
-    //     printChar(".", false);
-    // } else if (this.id == "equals"){
-    //     activeHistory += "=";
-    //     buttonHistory += activeHistory;
-    //     activeHistory = "";
-    //     clearDisplay(false);
-    //     updateHistory();
-    //     computeSolution();
-    // }
 }
 
 function activateDot(xCoord, yCoord) {
@@ -375,6 +396,7 @@ function computeSolution() {
     let computeArray = buttonHistory.split("");
     let computeNumbers = ["", ""];
     let numberIndex = 0;
+    let answer = 0;
     for (charIndex = 0; charIndex < buttonHistory.length; charIndex++) {
         if (
             (computeArray[charIndex] >= 0 && computeArray[charIndex] <= 9) ||
@@ -385,4 +407,32 @@ function computeSolution() {
             numberIndex++;
         }
     }
+    console.log(computeNumbers);
+    console.log(parseFloat(computeNumbers[0]));
+    for (charIndex = 0; charIndex < buttonHistory.length; charIndex++) {
+        if (computeArray[charIndex] == "+") {
+            answer =
+                parseFloat(computeNumbers[0]) + parseFloat(computeNumbers[1]);
+        } else if (computeArray[charIndex] == "-") {
+            answer =
+                parseFloat(computeNumbers[0]) - parseFloat(computeNumbers[1]);
+        } else if (computeArray[charIndex] == "/") {
+            answer =
+                parseFloat(computeNumbers[0]) / parseFloat(computeNumbers[1]);
+        } else if (computeArray[charIndex] == "*") {
+            answer =
+                parseFloat(computeNumbers[0]) * parseFloat(computeNumbers[1]);
+        }
+    }
+    let answerChars = String(answer).split("");
+    for (let charIndex = 0; charIndex < answerChars.length; charIndex++) {
+        printChar(answerChars[charIndex], false);
+        addSpace(false);
+    }
+    buttonHistory = answer;
+    activeHistory = "";
+    operations = document.getElementsByClassName("operation");
+    Array.from(operations).forEach((operation) => {
+        operation.disabled = false;
+    });
 }
