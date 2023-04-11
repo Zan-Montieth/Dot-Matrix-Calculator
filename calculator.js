@@ -149,6 +149,33 @@ const displayChar = {
         5: [false, false, false, false, false],
         6: [false, false, false, false, false],
     },
+    E: {
+        0: [true, true, true, true, true],
+        1: [true, false, false, false, false],
+        2: [true, false, false, false, false],
+        3: [true, true, true, true, false],
+        4: [true, false, false, false, false],
+        5: [true, false, false, false, false],
+        6: [true, true, true, true, true],
+    },
+    R: {
+        0: [true, true, true, true, false],
+        1: [true, false, false, false, true],
+        2: [true, false, false, false, true],
+        3: [true, true, true, true, false],
+        4: [true, false, true, false, false],
+        5: [true, false, false, true, false],
+        6: [true, false, false, false, true],
+    },
+    O: {
+        0: [false, true, true, true, false],
+        1: [true, false, false, false, true],
+        2: [true, false, false, false, true],
+        3: [true, false, false, false, true],
+        4: [true, false, false, false, true],
+        5: [true, false, false, false, true],
+        6: [false, true, true, true, false],
+    },
 };
 
 function startup() {
@@ -194,11 +221,18 @@ function sizeDotDisplay() {
 function setButtonFunctions() {
     numbers = document.getElementsByClassName("number");
     operations = document.getElementsByClassName("operation");
+    clearButton = document.getElementById("clr");
     Array.from(numbers).forEach((digit) => {
         digit.addEventListener("click", numberPress);
     });
     Array.from(operations).forEach((operation) => {
         operation.addEventListener("click", operationPress);
+    });
+    clearButton.addEventListener("click", function () {
+        clearDisplay(true);
+        clearDisplay(false);
+        activeHistory = "";
+        buttonHistory = "";
     });
 }
 
@@ -211,32 +245,32 @@ function numberPress() {
 function operationPress() {
     if (this.id == "division") {
         activeHistory += "/";
-        buttonHistory = activeHistory;
-        activeHistory = "";
-        clearDisplay(false);
-        updateHistory();
     } else if (this.id == "multiplication") {
         activeHistory += "*";
-        buttonHistory = activeHistory;
-        activeHistory = "";
-        clearDisplay(false);
-        updateHistory();
     } else if (this.id == "subtraction") {
         activeHistory += "-";
-        buttonHistory = activeHistory;
-        activeHistory = "";
-        clearDisplay(false);
-        updateHistory();
     } else if (this.id == "addition") {
         activeHistory += "+";
-        buttonHistory = activeHistory;
-        activeHistory = "";
-        clearDisplay(false);
-        updateHistory();
-    } else if (this.id == "decimal") {
-        activeHistory += ".";
-        printChar(".", false);
     }
+    buttonHistory += activeHistory;
+    activeHistory = "";
+    clearDisplay(false);
+    updateHistory();
+    operations = document.getElementsByClassName("operation");
+    Array.from(operations).forEach((operation) => {
+        operation.disabled = true;
+    });
+    // else if (this.id == "decimal") {
+    //     activeHistory += ".";
+    //     printChar(".", false);
+    // } else if (this.id == "equals"){
+    //     activeHistory += "=";
+    //     buttonHistory += activeHistory;
+    //     activeHistory = "";
+    //     clearDisplay(false);
+    //     updateHistory();
+    //     computeSolution();
+    // }
 }
 
 function activateDot(xCoord, yCoord) {
@@ -273,11 +307,11 @@ function shiftRowLeft(rowNum) {
 //     let newDotNum = +dotDisplay.childNodes[rowNum].firstChild.classList[1] - 1;
 //     dotElement.classList.add(newDotNum);
 //     dotDisplay.childNodes[rowNum].insertBefore(dotElement, dotDisplay.childNodes[rowNum].firstChild);
-// } Deprecated by updating print char function 
+// } Deprecated by updating print char function
 
 function printChar(charIn, isUpper) {
     charArray = displayChar[charIn];
-    charWidth = charArray[0].length
+    charWidth = charArray[0].length;
     if (isUpper == false) {
         for (col = 0; col < charWidth; col++) {
             for (row = 0; row < 7; row++) {
@@ -312,7 +346,6 @@ function addSpace(isUpper) {
 }
 
 function clearDisplay(isUpper) {
-    console.log("clear display run");
     if (isUpper == false) {
         for (col = 0; col < displayXdimension; col++) {
             for (row = 0; row < 7; row++) {
@@ -331,8 +364,25 @@ function clearDisplay(isUpper) {
 function updateHistory() {
     console.log(buttonHistory);
     charHistory = buttonHistory.split("");
+    clearDisplay(true);
     for (charIndex = 0; charIndex < charHistory.length; charIndex++) {
         printChar(charHistory[charIndex], true);
         addSpace(true);
+    }
+}
+
+function computeSolution() {
+    let computeArray = buttonHistory.split("");
+    let computeNumbers = ["", ""];
+    let numberIndex = 0;
+    for (charIndex = 0; charIndex < buttonHistory.length; charIndex++) {
+        if (
+            (computeArray[charIndex] >= 0 && computeArray[charIndex] <= 9) ||
+            computeArray[charIndex] == "."
+        ) {
+            computeNumbers[numberIndex] += computeArray[charIndex];
+        } else {
+            numberIndex++;
+        }
     }
 }
