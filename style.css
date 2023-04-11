@@ -6,6 +6,7 @@
 body,
 html {
     height: 100%;
+    background-color: #141414;
 }
 
 #calculator {
@@ -37,6 +38,11 @@ html {
 
 .row {
     display: flex;
+}
+
+#userInputs{
+    background-color: #404040;
+    padding: calc(var(--dotW) * 2);
 }
 
 .buttonRow {
