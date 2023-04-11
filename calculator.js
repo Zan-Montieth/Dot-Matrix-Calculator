@@ -131,6 +131,24 @@ const displayChar = {
         5: [true, false, false, false, true],
         6: [false, false, false, false, false],
     },
+    ".": {
+        0: [false, false],
+        1: [false, false],
+        2: [false, false],
+        3: [false, false],
+        4: [false, false],
+        5: [false, false],
+        6: [true, false],
+    },
+    "=": {
+        0: [false, false, false, false, false],
+        1: [false, false, false, false, false],
+        2: [false, true, true, true, false],
+        3: [false, false, false, false, false],
+        4: [false, true, true, true, false],
+        5: [false, false, false, false, false],
+        6: [false, false, false, false, false],
+    },
 };
 
 function startup() {
@@ -215,6 +233,9 @@ function operationPress() {
         activeHistory = "";
         clearDisplay(false);
         updateHistory();
+    } else if (this.id == "decimal") {
+        activeHistory += ".";
+        printChar(".", false);
     }
 }
 
@@ -242,10 +263,23 @@ function shiftRowLeft(rowNum) {
     dotDisplay.childNodes[rowNum].appendChild(dotElement);
 }
 
+// function shiftRowRight(rowNum) {
+//     let dotElement = document.createElement("div");
+//     dotElement.classList.add("dot");
+//     const dotDisplay = document.getElementById("dotDisplay");
+//     dotDisplay.childNodes[rowNum].removeChild(
+//         dotDisplay.childNodes[rowNum].lastChild
+//     );
+//     let newDotNum = +dotDisplay.childNodes[rowNum].firstChild.classList[1] - 1;
+//     dotElement.classList.add(newDotNum);
+//     dotDisplay.childNodes[rowNum].insertBefore(dotElement, dotDisplay.childNodes[rowNum].firstChild);
+// } Deprecated by updating print char function 
+
 function printChar(charIn, isUpper) {
     charArray = displayChar[charIn];
+    charWidth = charArray[0].length
     if (isUpper == false) {
-        for (col = 0; col < 5; col++) {
+        for (col = 0; col < charWidth; col++) {
             for (row = 0; row < 7; row++) {
                 if (charArray[row][col]) {
                     activateDot(111, 14 + row);
@@ -254,7 +288,7 @@ function printChar(charIn, isUpper) {
             }
         }
     } else {
-        for (col = 0; col < 5; col++) {
+        for (col = 0; col < charWidth; col++) {
             for (row = 0; row < 7; row++) {
                 if (charArray[row][col]) {
                     activateDot(111, 3 + row);
